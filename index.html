@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Night sky</title>
+    <style>
+      body {
+        background-color: black;
+      }
+      .star {
+        position: absolute;
+        border-radius: 50%;
+        background-color: rgb(255, 228, 74);
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      class Star {
+        constructor(minSize, maxSize, interval) {
+          this.maxSize = maxSize
+          this.minSize = minSize
+          this.interval = interval
+        }
+        getRandNum(min, max) {
+          return min + Math.floor(Math.random() * (max - min))
+        }
+        resizeStar(minSize, maxSize) {
+          this.intervalId = setInterval(() => {
+            this.star.style.width =
+              parseFloat(this.star.style.width) + this.getRandNum(0, 3) + "px"
+            this.star.style.height = this.star.style.width
+            if (parseFloat(this.star.style.width) >= this.maxSize) {
+              this.star.style.top =
+                this.getRandNum(0, window.innerHeight - 10) + "px"
+              this.star.style.left =
+                this.getRandNum(0, window.innerWidth - 10) + "px"
+              this.star.style.width = this.minSize + "px"
+              this.star.style.height = this.minSize + "px"
+              clearInterval(this.intervalId)
+              this.resizeStar(this.minSize, this.maxSize)
+            }
+          }, this.interval)
+        }
+        render() {
+          let star = document.createElement("div")
+          star.className = "star"
+          star.style.width = this.minSize + "px"
+          star.style.height = this.minSize + "px"
+          star.style.top = this.getRandNum(0, window.innerHeight - 10) + "px"
+          star.style.left = this.getRandNum(0, window.innerWidth - 10) + "px"
+
+          this.star = star
+          this.resizeStar(this.minSize, this.maxSize)
+          document.body.append(star)
+        }
+      }
+
+      for (let i = 0; i < 300; i++) {
+        let a = new Star(3, 10, 100)
+        a.render()
+      }
+    </script>
+  </body>
+</html>
